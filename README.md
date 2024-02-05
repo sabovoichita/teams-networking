@@ -1,1 +1,1 @@
-# teams-networking
+# Teams Networking
