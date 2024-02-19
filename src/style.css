@@ -2,10 +2,6 @@ html {
   height: 100%;
 }
 
-h1 {
-  color: blue;
-}
-
 body {
   margin: 0;
   min-height: 100%;
@@ -14,15 +10,52 @@ body {
 }
 
 header {
-  background-color: lightblue;
+  background-image: url(images/th.png);
 }
+
+#header-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background: linear-gradient(45deg, #0798abfa, transparent);
+}
+
+#my-picture {
+  padding: 5px;
+  width: 108px;
+  height: 108px;
+}
+
+#my-picture img {
+  border-radius: 50%;
+  border: 4px solid #fff;
+  background-color: #ffffff90;
+}
+
+#header-info {
+  flex: 1;
+  padding: 10px;
+  text-shadow: 1px 1px 2px #000000;
+}
+
+h1 {
+  margin: 5px 0;
+  color: #fff;
+}
+
+h2 {
+  margin: 5px 0;
+  color: #ffffff;
+  font-weight: 100;
+  font-size: 1.2em;
+}
+
 section {
   flex: 1;
 }
 
 footer {
   padding: 5px;
-
   background-color: lightblue;
   text-align: center;
 }
