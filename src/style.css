@@ -54,6 +54,9 @@ section {
   flex: 1;
 }
 
+table {
+  width: 100%;
+}
 footer {
   padding: 5px;
   background-color: lightblue;
