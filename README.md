@@ -42,3 +42,18 @@ Current app can connect with external [node-API](https://github.com/nmatei/node-
 
 - [x] Clone & Start node-api
 - [x] From current UI make request to node-api (using json or mysql url)
+
+## Start project
+
+```sh
+
+cd ../node-api/
+npm start
+
+```
+
+in current project terminal...
+
+```sh
+npm start
+```

@@ -10,5 +10,4 @@ function loadTeams() {
       return teams;
     });
   console.warn("loadTeams", promise);
-}
 loadTeams();
