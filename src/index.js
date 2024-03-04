@@ -14,6 +14,18 @@ function createTeamRequest(team) {
   });
 }
 
+function deleteTeamRequest(id) {
+  fetch("http://localhost:3000/teams-json/delete", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ id: id })
+  });
+}
+// make deleteTeamRequest available from global content
+window.deleteTeamRequest = deleteTeamRequest;
+
 function getTeamAsHTML(team) {
   return `
 <tr>
@@ -21,7 +33,9 @@ function getTeamAsHTML(team) {
   <td>${team.members}</td>
   <td>${team.name}</td>
   <td>${team.url}</td>
-  <td>x</td>
+  <td>
+  <a href ="#" onclick="deleteTeamRequest('${team.id}')">✖</a>
+  </td>
 </tr>`;
 }
 function renderTeams(teams) {
