@@ -47,8 +47,9 @@ Current app can connect with external [node-API](https://github.com/nmatei/node-
 
 ```sh
 
-cd ../node-api/
-npm start
+cd '../node-api/ && npm start'
+#or
+npm run api
 
 ```
 
