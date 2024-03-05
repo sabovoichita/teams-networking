@@ -19,7 +19,7 @@ You can also find new project ideas.
 
 - ➡ [Projects & Ideas](https://nmatei.github.io/teams-networking/)
 
-![Preview](images/project.png)
+![Preview](src/images/project.png)
 
 ## 📋 Steps to create this project
 
