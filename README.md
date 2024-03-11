@@ -2,7 +2,7 @@
 
 Teams job related networking (members, project name, project url)
 
-In Current Demo you'll see some of projects created by my students.
+In Current Demo you'll see some of projects created by students.
 You can also find new project ideas.
 
 ## 💠 Features & Usage
