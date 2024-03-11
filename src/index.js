@@ -1,6 +1,7 @@
 import "./style.css";
 
 let allTeams = [];
+let editId = false;
 
 function $(selector) {
   return document.querySelector(selector);
@@ -89,11 +90,17 @@ function getFormValues() {
 function onSubmit(e) {
   e.preventDefault();
   let team = getFormValues();
-  createTeamRequest(team);
+  if (editId) {
+    team.id = editId;
+    updateTeamRequest(team);
+  } else {
+    createTeamRequest(team);
+  }
   window.location.reload();
 }
 
 function startEdit(id) {
+  editId = id;
   const team = allTeams.find(team => {
     return id === team.id;
   });
