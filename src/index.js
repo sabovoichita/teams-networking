@@ -99,9 +99,9 @@ function onSubmit(e) {
   window.location.reload();
 }
 
-function startEdit(id) {
+function startEdit(teams, id) {
   editId = id;
-  const team = allTeams.find(team => {
+  const team = teams.find(team => {
     return id === team.id;
   });
   setFormValues(team);
@@ -118,7 +118,7 @@ function initEvents() {
       e.preventDefault();
       // const id = e.target.getAttribute("data-id");
       const id = e.target.dataset.id;
-      startEdit(id);
+      startEdit(allTeams, id);
     }
   });
 }
