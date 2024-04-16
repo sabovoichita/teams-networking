@@ -147,8 +147,25 @@ function onSearch(e) {
   });
   renderTeams(teams);
 }
+// function filterElements(search) {
+//   search = search.toLowerCase();
+//   //console.warn("search %o", search);
+//   return allTeams.filter(team => {
+//     return (
+//       team.promotion.toLowerCase().includes(search) ||
+//       team.members.toLowerCase().includes(search) ||
+//       team.name.toLowerCase().includes(search) ||
+//       team.url.toLowerCase().includes(search)
+//     );
+//   });
+// }
 
 function initEvents() {
+  // $("#search").addEventListener("input", e => {
+  //   const search = e.target.value;
+  //   const teams = filterElements(search);
+  //   renderTeams(teams);
+  // });
   $("#search").addEventListener("input", debounce(onSearch, 500));
   $("#search").addEventListener("reset", () => {
     console.warn("edit ", editId);
