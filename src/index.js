@@ -147,10 +147,10 @@ function onSearch(e) {
   });
   renderTeams(teams);
 }
-// function filterElements(search) {
+// function filterElements(teams,search) {
 //   search = search.toLowerCase();
 //   //console.warn("search %o", search);
-//   return allTeams.filter(team => {
+//   return teams.filter(team => {
 //     return (
 //       team.promotion.toLowerCase().includes(search) ||
 //       team.members.toLowerCase().includes(search) ||
@@ -163,7 +163,7 @@ function onSearch(e) {
 function initEvents() {
   // $("#search").addEventListener("input", e => {
   //   const search = e.target.value;
-  //   const teams = filterElements(search);
+  //   const teams = filterElements(allTeams, search);
   //   renderTeams(teams);
   // });
   $("#search").addEventListener("input", debounce(onSearch, 500));
