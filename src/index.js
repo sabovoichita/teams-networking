@@ -93,6 +93,7 @@ function onSubmit(e) {
   let team = getFormValues();
   if (editId) {
     team.id = editId;
+    // console.warn("should we edit?", editId, team);
     const req = updateTeamRequest(team);
     const response = req.then(r => r.json());
     response.then(status => {
@@ -145,6 +146,11 @@ function onSearch(e) {
 
 function initEvents() {
   $("#search").addEventListener("input", debounce(onSearch, 500));
+  $("#search").addEventListener("reset", () => {
+    console.warn("edit ", editId);
+    editId = undefined;
+  });
+
   $("#teamsForm").addEventListener("submit", onSubmit);
   $("#teamsTable tbody").addEventListener("click", e => {
     if (e.target.matches("a.delete-btn")) {
