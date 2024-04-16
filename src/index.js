@@ -2,7 +2,7 @@ import "./style.css";
 import { debounce } from "./utilities";
 
 let allTeams = [];
-let editId = false;
+let editId;
 
 function $(selector) {
   return document.querySelector(selector);
@@ -15,7 +15,7 @@ function createTeamRequest(team) {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(team)
-  });
+  }).then(r => r.json());
 }
 
 function deleteTeamRequest(id) {
@@ -25,7 +25,7 @@ function deleteTeamRequest(id) {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({ id: id })
-  });
+  }).then(r => r.json());
 }
 
 function updateTeamRequest(team) {
@@ -35,7 +35,7 @@ function updateTeamRequest(team) {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(team)
-  });
+  }).then(r => r.json());
 }
 
 function getTeamAsHTML(team) {
@@ -50,8 +50,8 @@ function getTeamAsHTML(team) {
   <a href="${url}" target="_blank">${displayUrl}</a>
 </td>
   <td>
-  <a href ="#" data-id="${team.id}" class="delete-btn">✖</a>
-  <a href ="#" data-id="${team.id}" class="edit-btn">&#9998;</a>
+  <a href ="#" data-id="${team.id}" class="action-btn delete-btn">✖</a>
+  <a href ="#" data-id="${team.id}" class="action-btn edit-btn">&#9998;</a>
 
   </td>
 </tr>`;
@@ -65,31 +65,14 @@ function renderTeams(teams) {
 }
 
 function loadTeams() {
-  const promise = fetch("http://localhost:3000/teams-json")
+  fetch("http://localhost:3000/teams-json")
     .then(r => r.json())
     .then(teams => {
       // console.info(teams);
       allTeams = teams;
       renderTeams(teams);
-      return teams;
+      console.timeEnd("app-ready");
     });
-  // console.warn("loadTeams", promise);
-}
-
-function setFormValues(team) {
-  $("input[name=promotion]").value = team.promotion;
-  $("input[name=members]").value = team.members;
-  $("input[name=name]").value = team.name;
-  $("input[name=url]").value = team.url;
-}
-
-function getFormValues() {
-  return {
-    promotion: $("input[name=promotion]").value,
-    members: $("input[name=members]").value,
-    name: $("input[name=name]").value,
-    url: $("input[name=url]").value
-  };
 }
 
 function onSubmit(e) {
@@ -107,13 +90,20 @@ function onSubmit(e) {
       }
     });
   } else {
-    createTeamRequest(team)
-      .then(r => r.json())
-      .then(status => {
-        if (status.success) {
-          window.location.reload();
-        }
-      });
+    createTeamRequest(team).then(status => {
+      console.warn("status", status, team);
+
+      //   r.json())
+      // .then(status => {
+
+      if (status.success) {
+        // window.location.reload();
+        team.id = status.id;
+        allTeams.push(team);
+        renderTeams(allTeams);
+        $("#teamsForm").reset();
+      }
+    });
   }
 }
 
@@ -123,6 +113,22 @@ function startEdit(teams, id) {
     return id === team.id;
   });
   setFormValues(team);
+}
+
+function setFormValues(team) {
+  $("input[name=promotion]").value = team.promotion;
+  $("input[name=members]").value = team.members;
+  $("input[name=name]").value = team.name;
+  $("input[name=url]").value = team.url;
+}
+
+function getFormValues() {
+  return {
+    promotion: $("input[name=promotion]").value,
+    members: $("input[name=members]").value,
+    name: $("input[name=name]").value,
+    url: $("input[name=url]").value
+  };
 }
 
 function onSearch(e) {
@@ -166,13 +172,15 @@ function initEvents() {
   //   const teams = filterElements(allTeams, search);
   //   renderTeams(teams);
   // });
+
   $("#search").addEventListener("input", debounce(onSearch, 500));
+
+  $("#teamsForm").addEventListener("submit", onSubmit);
   $("#search").addEventListener("reset", () => {
     console.warn("edit ", editId);
     editId = undefined;
   });
 
-  $("#teamsForm").addEventListener("submit", onSubmit);
   $("#teamsTable tbody").addEventListener("click", e => {
     if (e.target.matches("a.delete-btn")) {
       const id = e.target.dataset.id;
@@ -182,7 +190,7 @@ function initEvents() {
       e.preventDefault();
       // const id = e.target.getAttribute("data-id");
       const id = e.target.dataset.id;
-      startEdit(allTeams, id);
+      startEdit(id);
     }
   });
 }
