@@ -1,4 +1,5 @@
 import "./style.css";
+import { debounce } from "./utilities";
 
 let allTeams = [];
 let editId = false;
@@ -39,7 +40,7 @@ function updateTeamRequest(team) {
 
 function getTeamAsHTML(team) {
   return `
-<tr>
+  <tr>
   <td>${team.promotion}</td>
   <td>${team.members}</td>
   <td>${team.name}</td>
@@ -123,10 +124,14 @@ function onSearch(e) {
   const query = e.target.value.toLowerCase();
   const queries = query.split(/\s*,\s*/).filter(q => q);
   console.warn(queries);
+  if (!queries.length) {
+    renderTeams(allTeams);
+    return;
+  }
   const teams = allTeams.filter(team => {
-    console.info("filter", team, queries);
+    // console.info("filter", team, queries);
     return queries.some(q => {
-      console.info(" q %o", q, team.name);
+      // console.info(" q %o", q, team.name);
       return (
         team.promotion.toLowerCase().includes(q) ||
         team.members.toLowerCase().includes(q) ||
@@ -139,7 +144,7 @@ function onSearch(e) {
 }
 
 function initEvents() {
-  $("#search").addEventListener("input", onSearch);
+  $("#search").addEventListener("input", debounce(onSearch, 500));
   $("#teamsForm").addEventListener("submit", onSubmit);
   $("#teamsTable tbody").addEventListener("click", e => {
     if (e.target.matches("a.delete-btn")) {
