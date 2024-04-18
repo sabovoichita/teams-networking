@@ -113,8 +113,9 @@ function onSubmit(e) {
       console.warn("status", status);
       if (status.success) {
         team.id = status.id;
-        allTeams = allTeams.map(team => team);
-        allTeams.push(team);
+        //allTeams = allTeams.map(team => team);
+        //allTeams.push(team);
+        allTeams = [...allTeams, team];
         renderTeams(allTeams);
         $("#teamsForm").reset();
       }
