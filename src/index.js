@@ -84,8 +84,14 @@ function onSubmit(e) {
     });
   } else {
     createTeamRequest(team).then(status => {
-      // console.warn("status", status);
-      window.location.reload();
+      console.warn("status", status);
+      if (status.success) {
+        //window.location.reload();
+        team.id = status.id;
+        allTeams.push(team);
+        renderTeams(allTeams);
+        $("#teamsForm").reset();
+      }
     });
   }
 }
