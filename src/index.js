@@ -38,20 +38,17 @@ function updateTeamRequest(team) {
   }).then(r => r.json());
 }
 
-function getTeamAsHTML(team) {
-  const url = team.url;
+function getTeamAsHTML({ id, promotion, members, name, url }) {
   const displayUrl = url.startsWith("https://github.com/") ? url.substring(19) : url;
   return `
   <tr>
-  <td>${team.promotion}</td>
-  <td>${team.members}</td>
-  <td>${team.name}</td>
+  <td>${promotion}</td>
+    <td>${members}</td>
+    <td>${name}</td>
   <td><a href="${url}" target="_blank">${displayUrl}</a>
 </td><td>
-  <a href ="#" data-id="${team.id}" class="action-btn delete-btn">✖</a>
-  <a href ="#" data-id="${team.id}" class="action-btn edit-btn">&#9998;</a>
-  </td>
-</tr>`;
+<a href ="#" data-id="${id}" class="action-btn delete-btn">✖</a>
+  <a href ="#" data-id="${id}" class="action-btn edit-btn">&#9998;</a></tr>`;
 }
 
 function areTeamsEquals(renderedTeams, teams) {
@@ -145,11 +142,11 @@ function startEdit(id) {
   setFormValues(team);
 }
 
-function setFormValues(team) {
-  $("input[name=promotion]").value = team.promotion;
-  $("input[name=members]").value = team.members;
-  $("input[name=name]").value = team.name;
-  $("input[name=url]").value = team.url;
+function setFormValues({ promotion, members, name, url }) {
+  $("input[name=promotion]").value = promotion;
+  $("input[name=members]").value = members;
+  $("input[name=name]").value = name;
+  $("input[name=url]").value = url;
 }
 
 function getFormValues() {
@@ -191,12 +188,12 @@ function getFormValues() {
 function filterElements(teams, search) {
   search = search.toLowerCase();
   //console.warn("search %o", search);
-  return teams.filter(team => {
+  return teams.filter(({ promotion, members, name, url }) => {
     return (
-      team.promotion.toLowerCase().includes(search) ||
-      team.members.toLowerCase().includes(search) ||
-      team.name.toLowerCase().includes(search) ||
-      team.url.toLowerCase().includes(search)
+      promotion.toLowerCase().includes(search) ||
+      members.toLowerCase().includes(search) ||
+      name.toLowerCase().includes(search) ||
+      url.toLowerCase().includes(search)
     );
   });
 }
@@ -219,7 +216,7 @@ function initEvents() {
   $("#teamsTable tbody").addEventListener("click", e => {
     if (e.target.matches("a.delete-btn")) {
       console.log("e.target", e.target.dataset.id);
-      const id = e.target.dataset.id;
+      const { id } = e.target.dataset;
       deleteTeamRequest(id).then(status => {
         if (status.success) {
           allTeams = allTeams.filter(team => team.id !== id);
@@ -229,7 +226,7 @@ function initEvents() {
     } else if (e.target.matches("a.edit-btn")) {
       e.preventDefault();
       // const id = e.target.getAttribute("data-id");
-      const id = e.target.dataset.id;
+      const { id } = e.target.dataset;
       startEdit(id);
     }
   });
