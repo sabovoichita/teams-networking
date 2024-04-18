@@ -8,6 +8,15 @@ function $(selector) {
   return document.querySelector(selector);
 }
 
+function loadTeamsRequest() {
+  return fetch("http://localhost:3000/teams-json", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  }).then(r => r.json());
+}
+
 function createTeamRequest(team) {
   return fetch("http://localhost:3000/teams-json/create", {
     method: "POST",
@@ -84,13 +93,11 @@ function renderTeams(teams) {
 }
 
 function loadTeams() {
-  fetch("http://localhost:3000/teams-json")
-    .then(r => r.json())
-    .then(teams => {
-      allTeams = teams;
-      renderTeams(teams);
-      console.timeEnd("app-ready");
-    });
+  loadTeamsRequest().then(teams => {
+    allTeams = teams;
+    renderTeams(teams);
+    console.timeEnd("app-ready");
+  });
 }
 
 function updateTeam(teams, team) {
