@@ -179,6 +179,11 @@ function initEvents() {
       renderTeams(teams);
     }, 500)
   );
+  $("#selectAll").addEventListener("input", e => {
+    document.querySelectorAll("input[name=selected]").forEach(check => {
+      check.checked = e.target.checked;
+    });
+  });
 
   $("#teamsForm").addEventListener("submit", onSubmit);
   $("#search").addEventListener("reset", () => {
