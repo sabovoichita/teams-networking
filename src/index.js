@@ -1,8 +1,8 @@
-import "./style.css";
 import { debounce } from "./utilities";
+import "./style.css";
 
-let allTeams = [];
 let editId;
+let allTeams = [];
 
 function $(selector) {
   return document.querySelector(selector);
@@ -19,7 +19,7 @@ function createTeamRequest(team) {
 }
 
 function deleteTeamRequest(id) {
-  fetch("http://localhost:3000/teams-json/delete", {
+  return fetch("http://localhost:3000/teams-json/delete", {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json"
@@ -46,21 +46,17 @@ function getTeamAsHTML(team) {
   <td>${team.promotion}</td>
   <td>${team.members}</td>
   <td>${team.name}</td>
-  <td>
-  <a href="${url}" target="_blank">${displayUrl}</a>
-</td>
-  <td>
+  <td><a href="${url}" target="_blank">${displayUrl}</a>
+</td><td>
   <a href ="#" data-id="${team.id}" class="action-btn delete-btn">✖</a>
   <a href ="#" data-id="${team.id}" class="action-btn edit-btn">&#9998;</a>
-
   </td>
 </tr>`;
 }
 
 function renderTeams(teams) {
-  // console.warn("render", teams);
   const teamsHTML = teams.map(getTeamAsHTML);
-  // console.info("teams:", teamsHTML);
+
   $("#teamsTable tbody").innerHTML = teamsHTML.join("");
 }
 
@@ -68,7 +64,6 @@ function loadTeams() {
   fetch("http://localhost:3000/teams-json")
     .then(r => r.json())
     .then(teams => {
-      // console.info(teams);
       allTeams = teams;
       renderTeams(teams);
       console.timeEnd("app-ready");
@@ -80,38 +75,25 @@ function onSubmit(e) {
   let team = getFormValues();
   if (editId) {
     team.id = editId;
-    // console.warn("should we edit?", editId, team);
-    const req = updateTeamRequest(team);
-    const response = req.then(r => r.json());
-    response.then(status => {
-      console.info("status:", status);
+    console.warn("should we edit?", editId, team);
+    updateTeamRequest(team).then(status => {
+      // console.warn("status", status);
       if (status.success) {
         window.location.reload();
       }
     });
   } else {
     createTeamRequest(team).then(status => {
-      console.warn("status", status, team);
-
-      //   r.json())
-      // .then(status => {
-
-      if (status.success) {
-        // window.location.reload();
-        team.id = status.id;
-        allTeams.push(team);
-        renderTeams(allTeams);
-        $("#teamsForm").reset();
-      }
+      // console.warn("status", status);
+      window.location.reload();
     });
   }
 }
 
-function startEdit(teams, id) {
+function startEdit(id) {
   editId = id;
-  const team = teams.find(team => {
-    return id === team.id;
-  });
+  const team = allTeams.find(team => team.id === id);
+  console.warn("edit", id, team);
   setFormValues(team);
 }
 
@@ -123,69 +105,80 @@ function setFormValues(team) {
 }
 
 function getFormValues() {
+  const promotion = $("input[name=promotion]").value;
+  const members = $("input[name=members]").value;
+  const name = $("input[name=name]").value;
+  const url = $("input[name=url]").value;
   return {
-    promotion: $("input[name=promotion]").value,
-    members: $("input[name=members]").value,
-    name: $("input[name=name]").value,
-    url: $("input[name=url]").value
+    promotion: promotion,
+    members: members,
+    name,
+    url
   };
 }
 
-function onSearch(e) {
-  const query = e.target.value.toLowerCase();
-  const queries = query.split(/\s*,\s*/).filter(q => q);
-  console.warn(queries);
-  if (!queries.length) {
-    renderTeams(allTeams);
-    return;
-  }
-  const teams = allTeams.filter(team => {
-    // console.info("filter", team, queries);
-    return queries.some(q => {
-      // console.info(" q %o", q, team.name);
-      return (
-        team.promotion.toLowerCase().includes(q) ||
-        team.members.toLowerCase().includes(q) ||
-        team.name.toLowerCase().includes(q) ||
-        team.url.toLowerCase().includes(q)
-      );
-    });
-  });
-  renderTeams(teams);
-}
-// function filterElements(teams,search) {
-//   search = search.toLowerCase();
-//   //console.warn("search %o", search);
-//   return teams.filter(team => {
-//     return (
-//       team.promotion.toLowerCase().includes(search) ||
-//       team.members.toLowerCase().includes(search) ||
-//       team.name.toLowerCase().includes(search) ||
-//       team.url.toLowerCase().includes(search)
-//     );
+// function onSearch(e) {
+//   const query = e.target.value.toLowerCase();
+//   const queries = query.split(/\s*,\s*/).filter(q => q);
+//   console.warn(queries);
+//   if (!queries.length) {
+//     renderTeams(allTeams);
+//     return;
+//   }
+//   const teams = allTeams.filter(team => {
+//     // console.info("filter", team, queries);
+//     return queries.some(q => {
+//       // console.info(" q %o", q, team.name);
+//       return (
+//         team.promotion.toLowerCase().includes(q) ||
+//         team.members.toLowerCase().includes(q) ||
+//         team.name.toLowerCase().includes(q) ||
+//         team.url.toLowerCase().includes(q)
+//       );
+//     });
 //   });
+//   renderTeams(teams);
 // }
 
-function initEvents() {
-  // $("#search").addEventListener("input", e => {
-  //   const search = e.target.value;
-  //   const teams = filterElements(allTeams, search);
-  //   renderTeams(teams);
-  // });
+function filterElements(teams, search) {
+  search = search.toLowerCase();
+  //console.warn("search %o", search);
+  return teams.filter(team => {
+    return (
+      team.promotion.toLowerCase().includes(search) ||
+      team.members.toLowerCase().includes(search) ||
+      team.name.toLowerCase().includes(search) ||
+      team.url.toLowerCase().includes(search)
+    );
+  });
+}
 
-  $("#search").addEventListener("input", debounce(onSearch, 500));
+function initEvents() {
+  // $("#search").addEventListener("input", debounce(onSearch, 500));
+
+  $("#search").addEventListener("input", e => {
+    const search = e.target.value;
+    const teams = filterElements(allTeams, search);
+    renderTeams(teams);
+  });
 
   $("#teamsForm").addEventListener("submit", onSubmit);
   $("#search").addEventListener("reset", () => {
-    console.warn("edit ", editId);
+    console.warn("reset ", editId);
     editId = undefined;
   });
 
   $("#teamsTable tbody").addEventListener("click", e => {
     if (e.target.matches("a.delete-btn")) {
+      console.log("e.target", e.target.dataset.id);
       const id = e.target.dataset.id;
-      deleteTeamRequest(id);
-      window.location.reload();
+      deleteTeamRequest(id).then(status => {
+        if (status.success) {
+          window.location.reload();
+          // allTeams = allTeams.filter(team => team.id !== id);
+          // renderTeams(allTeams);
+        }
+      });
     } else if (e.target.matches("a.edit-btn")) {
       e.preventDefault();
       // const id = e.target.getAttribute("data-id");
