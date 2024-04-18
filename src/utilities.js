@@ -10,3 +10,7 @@ export function debounce(fn, delay) {
     }, delay);
   };
 }
+
+export function $(selector) {
+  return document.querySelector(selector);
+}
