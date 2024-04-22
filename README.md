@@ -17,7 +17,7 @@ You can also find new project ideas.
 
 ## 🎞 Live Preview
 
-- ➡ [Projects & Ideas](https://nmatei.github.io/teams-networking/)
+- ➡ [Live](https://sabovoichita.github.io/teams-networking/)
 
 ![Preview](src/images/project.png)
 
