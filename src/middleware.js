@@ -1,3 +1,37 @@
+// for demo purposes...
+const isDemo = location.host === "sabovoichita.github.io";
+//const inlineChanges = isDemo;
+
+const API = {
+  CREATE: {
+    URL: "http://localhost:3000/teams-json/create",
+    METHOD: "POST"
+  },
+  READ: {
+    URL: "http://localhost:3000/teams-json",
+    METHOD: "GET"
+  },
+  UPDATE: {
+    URL: "http://localhost:3000/teams-json/update",
+    METHOD: "PUT"
+  },
+  DELETE: {
+    URL: "http://localhost:3000/teams-json/delete",
+    METHOD: "DELETE"
+  }
+};
+
+if (isDemo) {
+  API.READ.URL = "data/products.json";
+  API.DELETE.URL = "data/delete.json";
+  API.CREATE.URL = "data/create.json";
+  API.UPDATE.URL = "data/update.json";
+
+  API.DELETE.METHOD = "GET";
+  API.CREATE.METHOD = "GET";
+  API.UPDATE.METHOD = "GET";
+}
+
 const baseUrl = "http://localhost:3000/teams-json";
 
 export function loadTeamsRequest() {
