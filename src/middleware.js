@@ -23,10 +23,10 @@ const API = {
 };
 
 if (isDemo) {
-  API.READ.URL = ".data/teams.json";
-  API.DELETE.URL = ".data/delete.json";
-  API.CREATE.URL = ".data/create.json";
-  API.UPDATE.URL = ".data/update.json";
+  API.READ.URL = "./data/teams.json";
+  API.DELETE.URL = "./data/delete.json";
+  API.CREATE.URL = "./data/create.json";
+  API.UPDATE.URL = "./data/update.json";
 
   API.DELETE.METHOD = "GET";
   API.CREATE.METHOD = "GET";
