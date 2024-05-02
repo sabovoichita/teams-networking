@@ -13,7 +13,7 @@
     "api": "cd ../node-api/ & npm start",
     "start": "webpack serve --open",
     "demo": "set PORT=8080 && serve docs",
-    "copy-resources": "Xcopy /E /C /I \"src/assets\" \"docs/assets\" && Xcopy /E /C /I \"src/data\" \"docs/data\""
+    "copy-resources": "Xcopy /E /C /I \"src/data\" \"docs/data\""
   },
   "keywords": [],
   "author": "Voichita Maria",
