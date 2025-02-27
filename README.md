@@ -133,3 +133,10 @@ npm run demo
 ```
 
 ! use it with PowerShell!
+
+CTRL+C = to stop project in Terminal
+
+## Change the way to import js & css
+
+//delete from html file the import for style.css & index.js
+//import "./style.css"; add it to index.js file at the top

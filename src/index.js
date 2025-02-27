@@ -1,1 +1,3 @@
-console.info("Welcome!");
+import "./style.css";
+
+console.warn("Welcome!");
