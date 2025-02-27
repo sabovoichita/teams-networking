@@ -106,3 +106,30 @@ module.exports = env => {
   };
 };
 ```
+
+## Configure npm scripts
+
+## Add following scripts inside package.json
+
+```
+{
+  "scripts": {
+    "clean": "rimraf docs",
+    "clear": "npm run clean && rimraf node_modules",
+    "prebuild": "npm run clean",
+    "build": "webpack --mode production",
+    "start": "webpack serve --open",
+    "demo": "set PORT=8080 && serve docs"
+  }
+}
+```
+
+## Running scripts:
+
+```
+npm start
+npm run build
+npm run demo
+```
+
+! use it with PowerShell!
