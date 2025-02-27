@@ -18,3 +18,27 @@ git status
 
 cd teams-networking
 git checkout udemy //to switch to udemy branch
+
+# Initialize Project to use Prettier:
+
+# create .prettierrc file
+
+```
+touch .prettierrc
+//Add following json inside .prettierrc
+{
+  "trailingComma": "none",
+  "semi": true,
+  "tabWidth": 2,
+  "singleQuote": false,
+  "printWidth": 120,
+  "arrowParens": "avoid"
+}
+```
+
+```
+VSCode: Manage > Settings
+Search: "Default Formatter" -> Select: "Prettier - Code..."
+Search: "Format On Save" -> Check it
+Right Click - Format Document With... (configure...)
+```
