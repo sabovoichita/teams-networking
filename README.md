@@ -2,6 +2,7 @@
 
 ## Instructios to create new branch
 
+```
 bname=udemy
 
 git switch --orphan $bname
@@ -18,10 +19,11 @@ git status
 
 cd teams-networking
 git checkout udemy //to switch to udemy branch
+```
 
-# Initialize Project to use Prettier:
+## Initialize Project to use Prettier:
 
-# create .prettierrc file
+## create .prettierrc file
 
 ```
 touch .prettierrc
@@ -50,4 +52,18 @@ npm -v
 node -v
 n
 npm init -y
+```
+
+## Initialize project to use Webpack
+
+## Installing required npm packages
+
+```
+npm install --save-dev webpack webpack-cli
+npm i -D webpack-dev-server
+npm i -D html-webpack-plugin
+npm i -D html-loader style-loader css-loader
+
+# create webpack.config.js file
+touch webpack.config.js
 ```
