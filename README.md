@@ -140,3 +140,25 @@ CTRL+C = to stop project in Terminal
 
 //delete from html file the import for style.css & index.js
 //import "./style.css"; add it to index.js file at the top
+`CTL + C to stop`
+
+```npm run build
+
+```
+
+install line by line :
+
+```
+npm install --global serve
+npm i -g rimraf
+```
+
+```
+npm run demo
+```
+
+to remove docs folder
+
+```
+npm run clean
+```
