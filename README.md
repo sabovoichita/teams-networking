@@ -42,3 +42,12 @@ Search: "Default Formatter" -> Select: "Prettier - Code..."
 Search: "Format On Save" -> Check it
 Right Click - Format Document With... (configure...)
 ```
+
+## Initialize project to use NPM
+
+```
+npm -v
+node -v
+n
+npm init -y
+```
