@@ -75,6 +75,7 @@ footer {
 #teamsTable th {
   border: 1px solid blue;
   padding: 5px;
+  line-height: 25px;
 }
 
 #teamsTable th {
@@ -89,4 +90,15 @@ footer {
 }
 #teamsTable tfoot input:not([type="image" i]) {
   box-sizing: border-box;
+}
+.action-btn {
+  cursor: pointer;
+  min-width: 34px;
+  display: none;
+}
+.delete-btn {
+  color: #b90303;
+}
+#teamsTable tr:hover .delete-btn {
+  display: inline-block;
 }

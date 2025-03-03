@@ -21,7 +21,9 @@ function getTeamAsHTML(team) {
     <td>${team.members}</td>
     <td>${team.name}</td>
     <td>${team.url}</td>
-    <td>x</td>
+    <td>
+      <button type = "button" class="delete-btn action-btn">♻</button>
+    </td>
   </tr>
   `;
 }
