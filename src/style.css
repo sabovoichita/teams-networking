@@ -94,11 +94,20 @@ footer {
 .action-btn {
   cursor: pointer;
   min-width: 34px;
-  display: none;
 }
 .delete-btn {
+  display: none;
   color: #b90303;
 }
-#teamsTable tr:hover .delete-btn {
+.edit-btn {
+  display: none;
+
+  color: #039903;
+}
+.table-actions {
+  width: 90px;
+}
+
+#teamsTable tr:hover .action-btn {
   display: inline-block;
 }
