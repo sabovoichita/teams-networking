@@ -1,5 +1,8 @@
 import "./style.css";
 
+let allTeams = [];
+let editId;
+
 function $(selector) {
   return document.querySelector(selector);
 }
@@ -21,6 +24,16 @@ function deleteTeamRequest(id) {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({ id: id })
+  }).then(r => r.json());
+}
+
+function updateTeamRequest(team) {
+  return fetch("http://localhost:3000/teams-json/update", {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(team)
   }).then(r => r.json());
 }
 
@@ -53,29 +66,58 @@ function loadTeams() {
   })
     .then(r => r.json())
     .then(teams => {
+      allTeams = teams;
       renderTeams(teams);
     });
 }
 function onSubmit(e) {
   e.preventDefault();
 
+  const team = getTeamValues();
+  if (editId) {
+    team.id = editId;
+    // console.warn("Should edit?", editId, team);
+    updateTeamRequest(team).then(status => {
+      // console.warn("ready status", status);
+      if (status.success) {
+        window.location.reload();
+      }
+    });
+  } else {
+    createTeamRequest(team).then(status => {
+      // console.warn("ready status", status);
+      if (status.success) {
+        window.location.reload();
+      }
+    });
+  }
+}
+
+function startEdit(id) {
+  editId = id;
+  const team = allTeams.find(team => team.id === id);
+  console.log("edit", id, team);
+  setTeamValues(team);
+}
+
+function setTeamValues(team) {
+  $("input[name=promotion]").value = team.promotion;
+  $("input[name=members]").value = team.members;
+  $("input[name=name]").value = team.name;
+  $("input[name=url]").value = team.url;
+}
+
+function getTeamValues() {
+  const promotion = $("input[name=promotion]").value;
   const members = $("input[name=members]").value;
-  const name = $("#name").value;
-  const url = $("#url").value;
-  const team = {
-    promotion: $("input[name=promotion]").value,
-    members: members,
+  const name = $("input[name=name]").value;
+  const url = $("input[name=url]").value;
+  return {
+    promotion,
+    members,
     name,
     url
   };
-
-  // console.warn(team);
-  createTeamRequest(team).then(status => {
-    // console.warn("ready status", status);
-    if (status.success) {
-      window.location.reload();
-    }
-  });
 }
 
 function initEvents() {
@@ -90,6 +132,9 @@ function initEvents() {
           window.location.reload();
         }
       });
+    } else if (e.target.matches("button.edit-btn")) {
+      const id = e.target.dataset.id;
+      startEdit(id);
     }
   });
 }
