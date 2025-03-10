@@ -162,7 +162,8 @@ function initEvents() {
       deleteTeamRequest(id).then(status => {
         // console.warn("ready? ", status);
         if (status.success) {
-          window.location.reload();
+          allTeams = allTeams.filter(team => team.id !== id);
+          renderTeams(allTeams);
         }
       });
     } else if (e.target.matches("button.edit-btn")) {
