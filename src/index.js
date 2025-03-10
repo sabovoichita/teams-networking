@@ -122,6 +122,10 @@ function getTeamValues() {
 
 function initEvents() {
   $("#teamsForm").addEventListener("submit", onSubmit);
+  $("#teamsForm").addEventListener("reset", () => {
+    console.log("reset", editId);
+    editId = undefined;
+  });
 
   $("#teamsTable tbody").addEventListener("click", e => {
     if (e.target.matches("button.delete-btn")) {
