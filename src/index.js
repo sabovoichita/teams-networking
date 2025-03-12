@@ -94,12 +94,10 @@ function renderTeams(teams) {
   console.timeEnd("render");
 }
 
-function loadTeams() {
-  loadTeamRequest().then(teams => {
-    allTeams = teams;
-    renderTeams(teams);
-    console.timeEnd("app-ready");
-  });
+async function loadTeams() {
+  const teams = await loadTeamRequest();
+  allTeams = teams;
+  renderTeams(teams);
 }
 
 function updateTeam(teams, team) {
@@ -216,5 +214,12 @@ function initEvents() {
   });
 }
 initEvents();
+loadTeams().then(() => {
+  console.timeEnd("app-ready");
+});
 
-loadTeams();
+//This code blocks the main thread
+// await loadTeams();
+// console.timeEnd("app-ready");
+
+console.info("end...");
