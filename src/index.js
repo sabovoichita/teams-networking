@@ -119,8 +119,9 @@ function onSubmit(e) {
       if (status.success) {
         // window.location.reload();
         team.id = status.id;
-        allTeams = allTeams.map(team => team);
-        allTeams.push(team);
+        // allTeams = allTeams.map(team => team);
+        // allTeams.push(team);
+        allTeams = [...allTeams, team];
         renderTeams(allTeams);
         $("#teamsForm").reset();
       }
