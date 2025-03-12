@@ -59,13 +59,13 @@ function getTeamAsHTML(team) {
 
 function areTeamsEquals(renderedTeams, teams) {
   if (renderedTeams === teams) {
-    // console.info("same array");
+    console.info("same array");
     return true;
   }
   if (renderedTeams.length === teams.length) {
     const eq = renderedTeams.every((team, i) => team === teams[i]);
     if (eq) {
-      // console.warn("same content in diferent arrays");
+      console.warn("same content in diferent arrays");
       return true;
     }
     return false;
@@ -119,6 +119,7 @@ function onSubmit(e) {
       if (status.success) {
         // window.location.reload();
         team.id = status.id;
+        allTeams = allTeams.map(team => team);
         allTeams.push(team);
         renderTeams(allTeams);
         $("#teamsForm").reset();
