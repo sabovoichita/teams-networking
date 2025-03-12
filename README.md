@@ -192,3 +192,12 @@ to remove docs folder
 ```
 npm run clean
 ```
+
+## If no data left run:
+
+- stop API sever
+
+```
+npm run data
+npm start
+```
