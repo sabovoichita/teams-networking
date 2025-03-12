@@ -57,9 +57,33 @@ function getTeamAsHTML(team) {
   `;
 }
 
+function areTeamsEquals(renderedTeams, teams) {
+  if (renderedTeams === teams) {
+    // console.info("same array");
+    return true;
+  }
+  if (renderedTeams.length === teams.length) {
+    const eq = renderedTeams.every((team, i) => team === teams[i]);
+    if (eq) {
+      // console.warn("same content in diferent arrays");
+      return true;
+    }
+    return false;
+  }
+}
+let renderedTeams = [];
 function renderTeams(teams) {
+  // console.time("eq-check");
+  if (areTeamsEquals(renderedTeams, teams)) {
+    // console.timeEnd("eq-check");
+    return;
+  }
+  // console.timeEnd("eq-check");
+  renderedTeams = teams;
+  console.time("render");
   const teamsHTML = teams.map(getTeamAsHTML);
   $("#teamsTable tbody").innerHTML = teamsHTML.join("");
+  console.timeEnd("render");
 }
 
 function loadTeams() {
