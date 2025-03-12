@@ -33,13 +33,11 @@ function getTeamAsHTML({ id, promotion, members, name, url }) {
 
 function areTeamsEquals(renderedTeams, teams) {
   if (renderedTeams === teams) {
-    console.info("same array");
     return true;
   }
   if (renderedTeams.length === teams.length) {
     const eq = renderedTeams.every((team, i) => team === teams[i]);
     if (eq) {
-      console.warn("same content in diferent arrays");
       return true;
     }
     return false;
@@ -47,17 +45,12 @@ function areTeamsEquals(renderedTeams, teams) {
 }
 let renderedTeams = [];
 function renderTeams(teams) {
-  // console.time("eq-check");
   if (areTeamsEquals(renderedTeams, teams)) {
-    // console.timeEnd("eq-check");
     return;
   }
-  // console.timeEnd("eq-check");
   renderedTeams = teams;
-  console.time("render");
   const teamsHTML = teams.map(getTeamAsHTML);
   $("#teamsTable tbody").innerHTML = teamsHTML.join("");
-  console.timeEnd("render");
 }
 
 async function loadTeams() {
@@ -69,7 +62,6 @@ async function loadTeams() {
 function updateTeam(teams, team) {
   return teams.map(t => {
     if (t.id === team.id) {
-      console.info("edited", t, team);
       return {
         ...t,
         ...team
@@ -86,8 +78,6 @@ async function onSubmit(e) {
   const team = getTeamValues();
   if (editId) {
     team.id = editId;
-    console.warn("Should edit?", editId, team);
-
     const status = await updateTeamRequest(team);
     if (status.success) {
       allTeams = updateTeam(allTeams, team);
@@ -97,12 +87,8 @@ async function onSubmit(e) {
     unmask(formSelector);
   } else {
     createTeamRequest(team).then(status => {
-      console.warn("ready status", status, team);
       if (status.success) {
-        // window.location.reload();
         team.id = status.id;
-        // allTeams = allTeams.map(team => team);
-        // allTeams.push(team);
         allTeams = [...allTeams, team];
         renderTeams(allTeams);
         $("#teamsForm").reset();
@@ -115,7 +101,6 @@ async function onSubmit(e) {
 function startEdit(id) {
   editId = id;
   const team = allTeams.find(team => team.id === id);
-  console.log("edit", id, team);
   setTeamValues(team);
 }
 
@@ -141,7 +126,6 @@ function getTeamValues() {
 
 function filterElements(teams, search) {
   search = search.toLowerCase();
-  // console.warn("search %o", search);
   return teams.filter(({ promotion, members, name, url }) => {
     return (
       promotion.toLowerCase().includes(search) ||
@@ -158,7 +142,6 @@ async function removeSelected() {
   const ids = [...selected].map(input => input.value);
   const promises = ids.map(id => deleteTeamRequest(id));
   const statuses = await Promise.allSettled(promises);
-  console.warn("remove selected", statuses);
   await loadTeams();
   unmask("#main");
 }
@@ -170,7 +153,6 @@ function initEvents() {
     "input",
     debounce(e => {
       const search = e.target.value;
-      console.info("search %o", search);
       const teams = filterElements(allTeams, search);
       renderTeams(teams);
     }, 200)
@@ -184,7 +166,6 @@ function initEvents() {
 
   $("#teamsForm").addEventListener("submit", onSubmit);
   $("#teamsForm").addEventListener("reset", () => {
-    console.log("reset", editId);
     editId = undefined;
   });
 
@@ -193,7 +174,6 @@ function initEvents() {
       const { id } = e.target.dataset;
       mask(formSelector);
       deleteTeamRequest(id).then(status => {
-        // console.warn("ready? ", status);
         if (status.success) {
           allTeams = allTeams.filter(team => team.id !== id);
           renderTeams(allTeams);
@@ -210,12 +190,5 @@ initEvents();
 
 mask(formSelector);
 loadTeams().then(() => {
-  console.timeEnd("app-ready");
   unmask(formSelector);
 });
-
-//This code blocks the main thread
-// await loadTeams();
-// console.timeEnd("app-ready");
-
-console.info("end...");
