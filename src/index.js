@@ -113,21 +113,20 @@ function updateTeam(teams, team) {
   });
 }
 
-function onSubmit(e) {
+async function onSubmit(e) {
   e.preventDefault();
 
   const team = getTeamValues();
   if (editId) {
     team.id = editId;
-    // console.warn("Should edit?", editId, team);
-    updateTeamRequest(team).then(status => {
-      // console.warn("ready status", status);
-      if (status.success) {
-        allTeams = updateTeam(allTeams, team);
-        renderTeams(allTeams);
-        $("#teamsForm").reset();
-      }
-    });
+    console.warn("Should edit?", editId, team);
+
+    const status = await updateTeamRequest(team);
+    if (status.success) {
+      allTeams = updateTeam(allTeams, team);
+      renderTeams(allTeams);
+      $("#teamsForm").reset();
+    }
   } else {
     createTeamRequest(team).then(status => {
       console.warn("ready status", status, team);
